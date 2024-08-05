@@ -1,190 +1,186 @@
-# 13 Object-Relational Mapping (ORM): E-Commerce Back End
+# 21 MERN: Book Search Engine
 
 ## Your Task
 
-Internet retail, also known as **e-commerce**, plays a significant role within the electronics industry, as it empowers businesses and consumers alike to conveniently engage in online buying and selling of electronic products. In the latest available data from 2021, the industry in the United States alone was estimated to have generated the substantial amount of US$2.54 trillion, according to the United Nations Conference on Trade and Development. E-commerce platforms like Shopify and WooCommerce provide a suite of services to businesses of all sizes. Due to the prevalence of these platforms, developers should understand the fundamental architecture of e-commerce sites.
+Your assignment this week is emblematic of the fact that most modern websites are driven by two things: data and user demands. This shouldn't come as a surprise, as the ability to personalize user data is the cornerstone of real-world web development today. And as user demands evolve, applications need to be more performant.
 
-Your task is to build the back end for an e-commerce site by modifying starter code. You’ll configure a working Express.js API to use Sequelize to interact with a PostgreSQL database.
+This week, you’ll take starter code with a fully functioning Google Books API search engine built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. The app was built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API. It's already set up to allow users to save book searches to the back end.
 
-Because this application won’t be deployed, you’ll also need to provide a link to a walkthrough video that demonstrates its functionality and all of the acceptance criteria being met. You’ll need to submit a link to the video and add it to the readme of your project.
+To complete the assignment, you’ll need to do the following:
+
+1. Set up an Apollo Server to use GraphQL queries and mutations to fetch and modify data, replacing the existing RESTful API.
+
+2. Modify the existing authentication middleware so that it works in the context of a GraphQL API.
+
+3. Create an Apollo Provider so that requests can communicate with an Apollo Server.
+
+4. Deploy your application to Render with a MongoDB database using MongoDB Atlas. Use the [Deploy with Render and MongoDB Atlas](https://coding-boot-camp.github.io/full-stack/mongodb/deploy-with-render-and-mongodb-atlas) walkthrough for instructions.
 
 ## User Story
 
 ```md
-AS A manager at an internet retail company
-I WANT a back end for my e-commerce website that uses the latest technologies
-SO THAT my company can compete with other e-commerce companies
+AS AN avid reader
+I WANT to search for new books to read
+SO THAT I can keep a list of books to purchase
 ```
 
 ## Acceptance Criteria
 
 ```md
-GIVEN a functional Express.js API
-WHEN I add my database name, PostgreSQL username, and PostgreSQL password to an environment variable file
-THEN I am able to connect to a database using Sequelize
-WHEN I enter schema and seed commands
-THEN a development database is created and is seeded with test data
-WHEN I enter the command to invoke the application
-THEN my server is started and the Sequelize models are synced to the PostgreSQL database
-WHEN I open API GET routes in Insomnia for categories, products, or tags
-THEN the data for each of these routes is displayed in a formatted JSON
-WHEN I test API POST, PUT, and DELETE routes in Insomnia
-THEN I am able to successfully create, update, and delete data in my database
+GIVEN a book search engine
+WHEN I load the search engine
+THEN I am presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button
+WHEN I click on the Search for Books menu option
+THEN I am presented with an input field to search for books and a submit button
+WHEN I am not logged in and enter a search term in the input field and click the submit button
+THEN I am presented with several search results, each featuring a book’s title, author, description, image, and a link to that book on the Google Books site
+WHEN I click on the Login/Signup menu option
+THEN a modal appears on the screen with a toggle between the option to log in or sign up
+WHEN the toggle is set to Signup
+THEN I am presented with three inputs for a username, an email address, and a password, and a signup button
+WHEN the toggle is set to Login
+THEN I am presented with two inputs for an email address and a password and login button
+WHEN I enter a valid email address and create a password and click on the signup button
+THEN my user account is created and I am logged in to the site
+WHEN I enter my account’s email address and password and click on the login button
+THEN I the modal closes and I am logged in to the site
+WHEN I am logged in to the site
+THEN the menu options change to Search for Books, an option to see my saved books, and Logout
+WHEN I am logged in and enter a search term in the input field and click the submit button
+THEN I am presented with several search results, each featuring a book’s title, author, description, image, and a link to that book on the Google Books site and a button to save a book to my account
+WHEN I click on the Save button on a book
+THEN that book’s information is saved to my account
+WHEN I click on the option to see my saved books
+THEN I am presented with all of the books I have saved to my account, each featuring the book’s title, author, description, image, and a link to that book on the Google Books site and a button to remove a book from my account
+WHEN I click on the Remove button on a book
+THEN that book is deleted from my saved books list
+WHEN I click on the Logout button
+THEN I am logged out of the site and presented with a menu with the options Search for Books and Login/Signup and an input field to search for books and a submit button  
 ```
 
 ## Mock-Up
 
-The following animation shows the application's GET routes to return all categories, all products, and all tags being tested in Insomnia:
+Let's start by revisiting the web application's appearance and functionality.
 
-![In Insomnia, the user tests “GET tags,” “GET Categories,” and “GET All Products.”.](./Assets/13-orm-homework-demo-01.gif)
+As you can see in the following animation, a user can type a search term (in this case, "star wars") in a search box and the results appear:
 
-The following animation shows the application's GET routes to return a single category, a single product, and a single tag being tested in Insomnia:
+![Animation shows "star wars" typed into a search box and books about Star Wars appearing as results.](./Assets/21-mern-homework-demo-01.gif)
 
-![In Insomnia, the user tests “GET tag by id,” “GET Category by ID,” and “GET One Product.”](./Assets/13-orm-homework-demo-02.gif)
+The user can save books by clicking "Save This Book!" under each search result, as shown in the following animation:
 
-The following animation shows the application's POST, PUT, and DELETE routes for categories being tested in Insomnia:
+![Animation shows user clicking "Save This Book!" button to save books that appear in search results. The button label changes to "Book Already Saved" after it is clicked and the book is saved.](./Assets/21-mern-homework-demo-02.gif)
 
-![In Insomnia, the user tests “DELETE Category by ID,” “CREATE Category,” and “UPDATE Category.”](./Assets/13-orm-homework-demo-03.gif)
+A user can view their saved books on a separate page, as shown in the following animation:
 
-Your walkthrough video should also show the POST, PUT, and DELETE routes for products and tags being tested in Insomnia.
+![The Viewing Lernantino's Books page shows the books that the user Lernaninto has saved.](./Assets/21-mern-homework-demo-03.gif)
 
 ## Getting Started
 
-This Challenge will require a video submission. Refer to the [Fullstack Blog Video Submission Guide](https://coding-boot-camp.github.io/full-stack/computer-literacy/video-submission-guide) for additional guidance on creating a video.
+In order for this application to use a GraphQL API, you’ll need to refactor the API to use GraphQL on the back end and add some functionality to the front end. The following sections contain details about the files you’ll need to modify on the back end and the front end.
 
-You’ll need to use the [pg](https://node-postgres.com/) and [Sequelize](https://www.npmjs.com/package/sequelize) packages to connect your Express.js API to a PostgreSQL database and the [dotenv](https://www.npmjs.com/package/dotenv) package to use environment variables to store sensitive data.
+**Important**: Make sure to study the application before building upon it. Better yet, start by making a copy of it. It's already a working application&mdash;you're converting it from RESTful API practices to a GraphQL API.
 
-Use the `schema.sql` file in the `db` folder to create your database with PostgreSQL shell commands. Use environment variables to store sensitive data like your PostgreSQL username, password, and database name.
+### Back-End Specifications
 
-### Database Models
+You’ll need to complete the following tasks in each of these back-end files:
 
-Your database should contain the following four models, including the requirements listed for each model:
+* `auth.js`: Update the auth middleware function to work with the GraphQL API.
 
-* `Category`
+* `server.js`: Implement the Apollo Server and apply it to the Express server as middleware.
 
-  * `id`
+* `Schemas` directory:
 
-    * Integer.
+  * `index.js`: Export your typeDefs and resolvers.
+
+  * `resolvers.js`: Define the query and mutation functionality to work with the Mongoose models.
+
+  **Hint**: Use the functionality in the `user-controller.js` as a guide.
+
+  * `typeDefs.js`: Define the necessary `Query` and `Mutation` types:
+
+    * `Query` type:
+
+      * `me`: Which returns a `User` type.
   
-    * Doesn't allow null values.
-  
-    * Set as primary key.
-  
-    * Uses auto increment.
+    * `Mutation` type:
 
-  * `category_name`
-  
-    * String.
-  
-    * Doesn't allow null values.
+      * `login`: Accepts an email and password as parameters; returns an `Auth` type.
 
-* `Product`
+      * `addUser`: Accepts a username, email, and password as parameters; returns an `Auth` type.
 
-  * `id`
-  
-    * Integer.
-  
-    * Doesn't allow null values.
-  
-    * Set as primary key.
-  
-    * Uses auto increment.
+      * `saveBook`: Accepts a book author's array, description, title, bookId, image, and link as parameters; returns a `User` type. (Look into creating what's known as an `input` type to handle all of these parameters!)
 
-  * `product_name`
-  
-    * String.
-  
-    * Doesn't allow null values.
+      * `removeBook`: Accepts a book's `bookId` as a parameter; returns a `User` type.
 
-  * `price`
-  
-    * Decimal.
-  
-    * Doesn't allow null values.
-  
-    * Validates that the value is a decimal.
+    * `User` type:
 
-  * `stock`
-  
-    * Integer.
-  
-    * Doesn't allow null values.
-  
-    * Set a default value of `10`.
-  
-    * Validates that the value is numeric.
+      * `_id`
 
-  * `category_id`
-  
-    * Integer.
-  
-    * References the `Category` model's `id`.
+      * `username`
 
-* `Tag`
+      * `email`
 
-  * `id`
-  
-    * Integer.
-  
-    * Doesn't allow null values.
-  
-    * Set as primary key.
-  
-    * Uses auto increment.
+      * `bookCount`
 
-  * `tag_name`
-  
-    * String.
+      * `savedBooks` (This will be an array of the `Book` type.)
 
-* `ProductTag`
+    * `Book` type:
 
-  * `id`
+      * `bookId` (Not the `_id`, but the book's `id` value returned from Google's Book API.)
 
-    * Integer.
+      * `authors` (An array of strings, as there may be more than one author.)
 
-    * Doesn't allow null values.
+      * `description`
 
-    * Set as primary key.
+      * `title`
 
-    * Uses auto increment.
+      * `image`
 
-  * `product_id`
+      * `link`
 
-    * Integer.
+    * `Auth` type:
 
-    * References the `Product` model's `id`.
+      * `token`
 
-  * `tag_id`
+      * `user` (References the `User` type.)
 
-    * Integer.
+### Front-End Specifications
 
-    * References the `Tag` model's `id`.
+You'll need to create the following front-end files:
 
-### Associations
+* `queries.js`: This will hold the query `GET_ME`, which will execute the `me` query set up using Apollo Server.
 
-You'll need to execute association methods on your Sequelize models to create the following relationships between them:
+* `mutations.js`:
 
-* `Product` belongs to `Category`, and `Category` has many `Product` models, as a category can have multiple products but a product can only belong to one category.
+  * `LOGIN_USER` will execute the `loginUser` mutation set up using Apollo Server.
 
-* `Product` belongs to many `Tag` models, and `Tag` belongs to many `Product` models. Allow products to have multiple tags and tags to have many products by using the `ProductTag` through model.
+  * `ADD_USER` will execute the `addUser` mutation.
 
-> **Hint:** Make sure you set up foreign key relationships that match the column we created in the respective models.
+  * `SAVE_BOOK` will execute the `saveBook` mutation.
 
-### Fill Out the API Routes to Perform RESTful CRUD Operations
+  * `REMOVE_BOOK` will execute the `removeBook` mutation.
 
-Fill out the unfinished routes in `product-routes.js`, `tag-routes.js`, and `category-routes.js` to perform create, read, update, and delete operations using your Sequelize models.
+Additionally, you’ll need to complete the following tasks in each of these front-end files:
 
-Note that the functionality for creating the many-to-many relationship for products has already been completed for you.
+* `App.jsx`: Create an Apollo Provider to make every request work with the Apollo Server.
+ 
+* `SearchBooks.jsx`:
 
-> **Hint**: Be sure to look at the mini-project code for syntax help and use your model's column definitions to figure out what `req.body` will be for POST and PUT routes!
+  * Use the Apollo `useMutation()` Hook to execute the `SAVE_BOOK` mutation in the `handleSaveBook()` function instead of the `saveBook()` function imported from the `API` file.
 
-### Seed the Database
+  * Make sure you keep the logic for saving the book's ID to state in the `try...catch` block!
 
-After creating the models and routes, run `npm run seed` to seed data to your database so that you can test your routes.
+* `SavedBooks.jsx`:
 
-### Sync Sequelize to the Database on Server Start
+  * Remove the `useEffect()` Hook that sets the state for `UserData`.
 
-Create the code needed in `server.js` to sync the Sequelize models to the PostgreSQL database on server start.
+  * Instead, use the `useQuery()` Hook to execute the `GET_ME` query on load and save it to a variable named `userData`.
+
+  * Use the `useMutation()` Hook to execute the `REMOVE_BOOK` mutation in the `handleDeleteBook()` function instead of the `deleteBook()` function that's imported from `API` file. (Make sure you keep the `removeBookId()` function in place!)
+
+* `SignupForm.jsx`: Replace the `addUser()` functionality imported from the `API` file with the `ADD_USER` mutation functionality.
+
+* `LoginForm.jsx`: Replace the `loginUser()` functionality imported from the `API` file with the `LOGIN_USER` mutation functionality.
 
 ## Grading Requirements
 
@@ -200,41 +196,39 @@ Create the code needed in `server.js` to sync the Sequelize models to the Postgr
 
 This Challenge is graded based on the following criteria:
 
-### Deliverables: 10%
-
-* The GitHub repository containing your application code.
-
-### Walkthrough Video: 37%
-
-* A walkthrough video that demonstrates the functionality of the e-commerce back end must be submitted, and a link to the video should be included in your readme file.
-
-* The walkthrough video must show all of the technical acceptance criteria being met.
-
-* The walkthrough video must demonstrate how to create the schema from the PostgreSQL shell.
-
-* The walkthrough video must demonstrate how to seed the database from the command line.
-
-* The walkthrough video must demonstrate how to start the application’s server.
-
-* The walkthrough video must demonstrate GET routes for all categories, all products, and all tags being tested in Insomnia.
-
-* The walkthrough video must demonstrate GET routes for a single category, a single product, and a single tag being tested in Insomnia.
-
-* The walkthrough video must demonstrate POST, PUT, and DELETE routes for categories, products, and tags being tested in Insomnia.
-
 ### Technical Acceptance Criteria: 40%
 
 * Satisfies all of the preceding acceptance criteria plus the following:
 
-  * Connects to a PostgreSQL database using the [pg](https://node-postgres.com/) and [Sequelize](https://www.npmjs.com/package/sequelize) packages.
+  * Has an Apollo Server that uses GraphQL queries and mutations to fetch and modify data, replacing the existing RESTful API.
 
-  * Stores sensitive data, like a user’s PostgreSQL username, password, and database name, using environment variables through the [dotenv](https://www.npmjs.com/package/dotenv) package.
+  * Use an Apollo Server and apply it to the Express.js server as middleware.
 
-  * Syncs Sequelize models to a PostgreSQL database on the server start.
+  * Include schema settings for resolvers and typeDefs as outlined in the Challenge instructions.
 
-  * Includes column definitions for all four models outlined in the Challenge instructions.
+  * Modify the existing authentication middleware to work in the context of a GraphQL API.
 
-  * Includes model associations outlined in the Challenge instructions.
+  * Use an Apollo Provider so that the application can communicate with the Apollo Server.
+
+  * Application must be deployed to Render.
+
+### Deployment: 32%
+
+* Application deployed at live URL.
+
+* Application loads with no errors.
+
+* Application GitHub URL submitted.
+
+* GitHub repository contains application code.
+
+### Application Quality: 15%
+
+* User experience is intuitive and easy to navigate.
+
+* User interface style is clean and polished.
+
+* Application resembles the mock-up functionality provided in the Challenge instructions.
 
 ### Repository Quality: 13%
 
@@ -246,15 +240,15 @@ This Challenge is graded based on the following criteria:
 
 * Repository contains multiple descriptive commit messages.
 
-* Repository contains quality readme with description and a link to a walkthrough video.
+* Repository contains high-quality README file with description, screenshot, and link to the deployed application.
 
 ## Review
 
 You are required to submit BOTH of the following for review:
 
-* A walkthrough video demonstrating the functionality of the application and all of the acceptance criteria being met.
+* The URL of the functional, deployed application.
 
-* The URL of the GitHub repository. Give the repository a unique name and include a readme describing the project.
+* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
 
 ---
 © 2024 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
