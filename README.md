@@ -1,47 +1,30 @@
-# 21 MERN: Book Search Engine
-
-## Your Task
-
-
 
 ----------------------------
-|| ..
-
 # MERN - BOOK SEARCH ENGINE
 
 ## Description
 
-
+This MERN stack application allows users to search Google Books, view results, and save books to their accounts. It uses Apollo Server for a GraphQL API, with JSON Web Tokens for security.
 
   ## Table of Contents 📖
-  
-  [Installation](#installation)
 
   [Usage](#usage)
 
-  [Links](#Links)
-
-  [Screenshot](#Screenshot)
-
-  [Screenrecording](#ScreenRecording)
+  [REPO](#REPO)
 
   [License](#license)
 
   [Built-With](#Built-With)
 
-  [Tests](#tests) 
-
-  [Credits](#credits)
-
   [Questions](#questions)
   
+
   ## Usage 
 
 
-## Screenshots
+  ## REPO
 
-||
-______________________________________________________________________________
+https://github.com/Jarvisismy-copilot/Search-Engine
 
 ## License
 
@@ -58,14 +41,6 @@ No License.
 - MongoDB
 - Mongoose
 - Dotenv
-
-## Tests 
-
-|| N/A
-
-## Credits 
-
-https://github.com/Jarvisismy-copilot
 
  ## Questions 
   
