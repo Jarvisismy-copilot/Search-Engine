@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { GET_ME } from '../queries';
@@ -7,13 +7,15 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const { data, refetch } = useQuery(GET_ME);
+  const { data, loading, refetch } = useQuery(GET_ME, {
+    skip: !Auth.loggedIn(), // Skip the query if the user is not logged in
+  });
+  
   const [removeBook] = useMutation(REMOVE_BOOK);
 
+  // Function to handle deleting a book
   const handleDeleteBook = async (bookId) => {
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    if (!token) {
+    if (!Auth.loggedIn()) {
       return false;
     }
 
@@ -21,22 +23,28 @@ const SavedBooks = () => {
       await removeBook({
         variables: { bookId },
         update(cache, { data: { removeBook } }) {
-          // Optional: Update the Apollo cache
+          // Optional: Update Apollo cache
           cache.writeQuery({
             query: GET_ME,
             data: { me: removeBook },
           });
         },
       });
-      removeBookId(bookId); // Update local storage
+      removeBookId(bookId); // Remove from local storage
       refetch(); // Refresh the data from the server
     } catch (err) {
       console.error('Error removing book', err);
     }
   };
 
-  if (!data) {
+  // Show loading message if data is not yet fetched
+  if (loading) {
     return <h2>LOADING...</h2>;
+  }
+
+  // Return early if there's no user data
+  if (!data || !data.me) {
+    return <h2>Something went wrong!</h2>;
   }
 
   const savedBooks = data.me.savedBooks;
