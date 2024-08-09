@@ -20,16 +20,7 @@ const SavedBooks = () => {
     }
 
     try {
-      await removeBook({
-        variables: { bookId },
-        update(cache, { data: { removeBook } }) {
-          // Optional: Update Apollo cache
-          cache.writeQuery({
-            query: GET_ME,
-            data: { me: removeBook },
-          });
-        },
-      });
+      await removeBook({ variables: { bookId } });
       removeBookId(bookId); // Remove from local storage
       refetch(); // Refresh the data from the server
     } catch (err) {
