@@ -7,6 +7,7 @@
 This MERN stack application allows users to search Google Books, view results, and save books to their accounts. It uses Apollo Server for a GraphQL API, with JSON Web Tokens for security.
 
   ## Table of Contents 📖
+  
 
   [Usage](#usage)
 
