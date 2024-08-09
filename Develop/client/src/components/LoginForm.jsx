@@ -1,24 +1,31 @@
-// see SignupForm.js for comments
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
-import { loginUser } from '../utils/API';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../graphql/mutations'; // Adjust the path as needed
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
+  // Set initial form state
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
+  // Set state for form validation
   const [validated] = useState(false);
+  // Set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
+  // Initialize the LOGIN_USER mutation
+  const [loginUser] = useMutation(LOGIN_USER);
+
+  // Handle input changes and update form state
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
 
+  // Handle form submission
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
+    // Check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -26,22 +33,28 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await loginUser(userFormData);
+      // Execute the LOGIN_USER mutation
+      const { data } = await loginUser({
+        variables: {
+          email: userFormData.email,
+          password: userFormData.password,
+        },
+      });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
+      if (!data) {
+        throw new Error('Something went wrong!');
       }
 
-      const { token, user } = await response.json();
-      console.log(user);
+      // Extract token from mutation response
+      const { token } = data.login;
       Auth.login(token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
 
+    // Clear form data
     setUserFormData({
-      username: '',
       email: '',
       password: '',
     });
@@ -50,13 +63,15 @@ const LoginForm = () => {
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
+        {/* Show alert if server response is bad */}
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
         </Alert>
+
         <Form.Group className='mb-3'>
           <Form.Label htmlFor='email'>Email</Form.Label>
           <Form.Control
-            type='text'
+            type='email' // Correct type for email
             placeholder='Your email'
             name='email'
             onChange={handleInputChange}
