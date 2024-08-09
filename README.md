@@ -288,19 +288,10 @@ You are required to submit BOTH of the following for review:
   
   ## Usage 
 
->>> Edit **
-
 
 ## Screenshots
 
->>> Edit **
-
-![Screen_Shot.1] (add Screenhot 1.0)
-
-![Screen_Shot.2] (add Screenhot 2.0)
-
->>> If Neccessary... 
-
+||
 ______________________________________________________________________________
 
 ## License
@@ -309,12 +300,19 @@ No License.
 
 ## Built-With
 
->>> - Edit ** 
+- JavaScript
+- Node.js
+- Express
+- React
+- Apollo Server
+- Graphql
+- MongoDB
+- Mongoose
+- Dotenv
 
 ## Tests 
 
->>> - Edit ** If Necessary... 
-
+|| N/A
 
 ## Credits 
 

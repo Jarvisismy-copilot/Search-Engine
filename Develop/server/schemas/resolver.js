@@ -6,6 +6,7 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
+       // Populate saved books 
         return User.findById(context.user._id).populate('savedBooks');
       }
       throw new AuthenticationError('Not logged in');
@@ -25,12 +26,14 @@ const resolvers = {
       }
 
       const token = signToken(user);
+      // Return token and user
       return { token, user };
     },
 
     addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
       const token = signToken(user);
+      // Return token and user
       return { token, user };
     },
 
@@ -51,6 +54,7 @@ const resolvers = {
       if (context.user) {
         return User.findByIdAndUpdate(
           context.user._id,
+           // Remove book from saved books
           { $pull: { savedBooks: { bookId } } },
           { new: true }
         );
