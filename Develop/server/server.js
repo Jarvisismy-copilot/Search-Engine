@@ -5,17 +5,18 @@ const db = require('./config/connection');
 const routes = require('./routes');
 const typeDefs = require('./schemas/typeDefs'); 
 const resolvers = require('./schemas/resolvers'); 
+const { authenticate } = require('./config/auth'); // Import the updated auth functions
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// setup Apollo Server
+// Set up Apollo Server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    // Add context if needed (e.g., for authentication)
-    return {};
+  context: async ({ req }) => {
+    const context = await authenticate(req); // Use the authenticate function
+    return context;
   },
 });
 
