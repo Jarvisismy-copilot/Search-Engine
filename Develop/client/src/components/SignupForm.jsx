@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
-import { ADD_USER } from '../graphql/mutations'; // Adjust the path as needed
+import { ADD_USER } from '../graphql/mutations'; // Adjusted path
 import Auth from '../utils/auth';
 
 const SignupForm = () => {
@@ -23,20 +23,14 @@ const SignupForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // Check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
     }
 
     try {
       const { data } = await addUser({
-        variables: {
-          username: userFormData.username,
-          email: userFormData.email,
-          password: userFormData.password,
-        },
+        variables: { ...userFormData },
       });
 
       if (!data) {
@@ -46,7 +40,7 @@ const SignupForm = () => {
       const { token } = data.addUser;
       Auth.login(token);
     } catch (err) {
-      console.error(err);
+      console.error('Signup error:', err);
       setShowAlert(true);
     }
 
@@ -59,7 +53,7 @@ const SignupForm = () => {
 
   return (
     <>
-      {/* This is needed for the validation functionality above */}
+      {/* Validation functionality above (Form for user signup) */}
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         {/* Show alert if server response is bad */}
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>

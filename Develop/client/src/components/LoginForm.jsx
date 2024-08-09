@@ -41,15 +41,15 @@ const LoginForm = () => {
         },
       });
 
-      if (!data) {
+      if (!data || !data.loginUser) {
         throw new Error('Something went wrong!');
       }
 
       // Extract token from mutation response
-      const { token } = data.login;
+      const { token } = data.loginUser;
       Auth.login(token);
     } catch (err) {
-      console.error(err);
+      console.error('Login error:', err);
       setShowAlert(true);
     }
 
