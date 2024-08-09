@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const secret = 'mysecretsshhhhh';
 const expiration = '2h';
 
-// Function to verify the token and attach user info to the context
+// Middleware function to authenticate and add user to context
 const authenticate = async (req) => {
   let token = req.headers.authorization || '';
 
@@ -17,7 +17,7 @@ const authenticate = async (req) => {
   }
 
   try {
-    const { data } = jwt.verify(token, secret, { maxAge: expiration });
+    const { data } = jwt.verify(token, secret); // Verify the token
     return { user: data }; // Attach user info to context
   } catch (err) {
     console.log('Invalid token', err);
